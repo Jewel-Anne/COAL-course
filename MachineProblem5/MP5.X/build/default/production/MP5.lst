@@ -1,0 +1,214 @@
+MPASM 5.87                           MP5.ASM   3-2-2023  2:40:45         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;###########################     COMMENT HEADER     ############################
+                      00002 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00003 ;  Author:          Jewel Anne A. Reyes                                         ;                       
+                               
+                      00004 ;  Date:            February 28, 2023                                           ;             
+                      00005 ;  Version:         1.0.0                                                       ;
+                      00006 ;  Title:           Machine Problem 5                                           ;
+                      00007 ;                                                                               ;
+                      00008 ;  Description:     This Code shows the running light of                        ;
+                      00009 ;                   1 LED or logic probe with 1-sec interval.                   ;
+                      00010 ;                   It uses a Watchdog Timer with Prescaler/Postscaler          ;
+                      00011 ;                   rate of 1:128 for 2.3 seconds.                              ;
+                      00012 ;                                                                               ;
+                      00013 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00014 
+                      00015         
+                      00016 ;#############    DECLARATION AND CONFIGURATION OF A PROCESSOR    ##############        
+Warning[205]: Found directive in column 1. (list)
+                      00017 list p=16f84a                   ;Defining microcontroller model
+                      00018 #include <p16f84a.inc>          ;Processor library for PIC16
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Jan 06 2020
+                      00005 ;  MPASM PIC16F84A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2020 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00209         LIST
+Warning[205]: Found directive in column 1. (__CONFIG)
+2007   3FF5           00019 __CONFIG _CP_OFF & _PWRTE_ON & _WDT_ON & _XT_OSC        ;Sets processor configuration bits
+                      00020 
+                      00021         
+                      00022 ;##### DIRECTIVE EQU(equivalent) = text substitution for constant/variable #####
+                      00023 ; Special Purpose Registers (SFR):
+  00000003            00024 STATUS      EQU 03H             ;STATUS equivalent to 03H File Address
+  00000005            00025 PORTA       EQU 05H     
+  00000006            00026 PORTB       EQU 06H     
+  00000085            00027 TRISA       EQU 85H     
+  00000086            00028 TRISB       EQU 86H
+  00000081            00029 OPTION_REG  EQU 81H             ;this is optional since it is already in p16f84a.inc
+                      00030 
+                      00031 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00032         ORG 00H                 ;Start assembling lines below this statement at RESET vector (00h)
+0000   2???           00033             GOTO Initial
+                      00034         ORG 04H                 ;Start assembling lines below this statement at Peripheral Interrupt Vec
+                            tor (04H)
+0004   0009           00035             RETFIE              ;Return from interrupt
+                      00036 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;        
+0005                  00037 Initial
+0005   1683           00038         BSF STATUS, RP0         ;Bit Set F (goes to Bank 1)
+                      00039         
+MPASM 5.87                           MP5.ASM   3-2-2023  2:40:45         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00040     ;Setting PORTB as Output
+0006   3000           00041         MOVLW b'00000000'       ;Move to W Register the binary input 00H
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0007   0086           00042         MOVWF TRISB             ;Transfer W Register literals to F Register 86H
+                      00043         
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0008   1581           00044         BSF OPTION_REG, 3       ;Assigning Prescaler to WDT
+                      00045         
+                      00046     ;Setting Prescaler/Postcaler to 1:128 Rate or 2.3 Seconds (1.1.1) 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0009   1501           00047         BSF OPTION_REG, 2       ;Set the Bit 2 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000A   1481           00048         BSF OPTION_REG, 1       ;Set the Bit 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000B   1401           00049         BSF OPTION_REG, 0       ;Set the Bit 0
+                      00050         
+000C   1283           00051         BCF STATUS, 5           ;Bit Clear F (goes to Bank 0)
+000D   2???           00052         Goto Start
+                      00053 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000E                  00054 Start   
+000E   1406           00055         BSF PORTB, 0            ;Setting RB0 to high
+000F   3005           00056         MOVLW b'00000101'
+                      00057 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0010                  00058 Infinite        
+0010   0064           00059         CLRWDT                  ;Reset WDT
+0011   1006           00060         BCF PORTB, 0            ;Setting RB0 to low
+0012   2???           00061         Goto Infinite           ;Having infinite loop
+                      00062 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Warning[205]: Found directive in column 1. (END)
+3FF5                  00063 END   
+MPASM 5.87                           MP5.ASM   3-2-2023  2:40:45         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+C                                 00000000
+DC                                00000001
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+Infinite                          00000010
+Initial                           00000005
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+STATUS                            00000003
+Start                             0000000E
+T0CS                              00000005
+T0IE                              00000005
+MPASM 5.87                           MP5.ASM   3-2-2023  2:40:45         PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84A                          00000001
+
+Errors   :     0
+Warnings :     3 reported,     0 suppressed
+Messages :     5 reported,     0 suppressed
+
+
