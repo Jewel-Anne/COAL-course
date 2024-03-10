@@ -1,0 +1,4 @@
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM2\MP2A.X\MP2A.ASM 18 : Found directive in column 1. (list)
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM2\MP2A.X\MP2A.ASM 20 : Found directive in column 1. (__CONFIG)
+Message[302] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM2\MP2A.X\MP2A.ASM 49 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM2\MP2A.X\MP2A.ASM 108 : Found directive in column 1. (END)

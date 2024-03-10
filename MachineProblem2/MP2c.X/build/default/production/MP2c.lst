@@ -1,0 +1,204 @@
+MPASM 5.87                          MP2C.ASM   3-2-2023  8:47:10         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;###########################     COMMENT HEADER     ############################
+                      00002 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00003 ;  Author:          Jewel Anne A. Reyes                                         ;                       
+                               
+                      00004 ;  Date:            February 28, 2023                                           ;             
+                      00005 ;  Version:         1.0.0                                                       ;
+                      00006 ;  Title:           Machine Problem 2.c                                         ;
+                      00007 ;                                                                               ;
+                      00008 ;  Description:     This Code shows a BCD Counter of 00H-FFH                    ;
+                      00009 ;                   using 1-second interval.                                    ;
+                      00010 ;                   It will increment every negative input in RA4.              ;
+                      00011 ;                                                                               ;
+                      00012 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00013 
+                      00014         
+                      00015 ;#############    DECLARATION AND CONFIGURATION OF A PROCESSOR    ##############        
+Warning[205]: Found directive in column 1. (list)
+                      00016 list p=16f84a                   ;Defining microcontroller model
+                      00017 #include <p16f84a.inc>          ;Processor library for PIC16
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Jan 06 2020
+                      00005 ;  MPASM PIC16F84A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2020 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00209         LIST
+Warning[205]: Found directive in column 1. (__CONFIG)
+2007   3FF1           00018 __CONFIG _CP_OFF & _PWRTE_ON & _WDT_OFF & _XT_OSC       ;Sets processor configuration bits
+                      00019 
+                      00020         
+                      00021 ;##### DIRECTIVE EQU(equivalent) = text substitution for constant/variable #####
+                      00022 ; Special Purpose Registers (SFR):
+  00000003            00023 STATUS    EQU 03H               ;STATUS equivalent to 03H File Address
+  00000005            00024 PORTA     EQU 05H       
+  00000006            00025 PORTB     EQU 06H       
+  00000085            00026 TRISA     EQU 85H       
+  00000086            00027 TRISB     EQU 86H
+                      00028   
+                      00029 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00030         ORG 00H                 ;Start assembling lines below this statement at RESET vector (00h)
+0000   2???           00031             goto Initial
+                      00032         ORG 04H                 ;Start assembling lines below this statement at Peripheral Interrupt Vec
+                            tor (04H)
+0004   0009           00033             retfie              ;Return from interrupt
+                      00034 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0005                  00035 Initial
+0005   1683           00036         BSF STATUS, 5           ;Bit Set F (goes to Bank 1)
+                      00037         
+                      00038     ;Setting PORTA as Input and PORTB as Output
+0006   3010           00039         MOVLW b'00010000'       ;Move to W Register the binary input 10H
+MPASM 5.87                          MP2C.ASM   3-2-2023  8:47:10         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0007   0085           00040         MOVWF TRISA             ;Transfer W Register literals to F Register 85H
+0008   3000           00041         MOVLW b'00000000'       ;Move to W Register the binary input 00H
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0009   0086           00042         MOVWF TRISB             ;Transfer W Register literals to F Register 86H
+                      00043         
+000A   1283           00044         BCF STATUS, 5           ;Bit Clear F (goes to Bank 0)
+000B   0186           00045         CLRF PORTB              ;Initialize PORTB to 0
+                      00046         
+000C   2???           00047         goto Main
+                      00048 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000D                  00049 Main
+000D   1E05           00050     BTFSS PORTA, 4              ;Check if RA4 is high
+000E   2???           00051     goto Main                   ;If it's high, keep waiting for falling edge
+000F   1A05           00052     BTFSC PORTA, 4              ;Check if RA4 is now low
+0010   2???           00053     goto Main                   ;If it's still high, keep waiting for falling edge
+0011   0A86           00054     INCF PORTB, 1               ;If it's low, increment PORTB
+0012   2???           00055     goto Main                   ;Wait for next falling edge
+                      00056 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Warning[205]: Found directive in column 1. (end)
+3FF1                  00057 end
+MPASM 5.87                          MP2C.ASM   3-2-2023  8:47:10         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+C                                 00000000
+DC                                00000001
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+Initial                           00000005
+Main                              0000000D
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+STATUS                            00000003
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+MPASM 5.87                          MP2C.ASM   3-2-2023  8:47:10         PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+T0SE                              00000004
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84A                          00000001
+
+Errors   :     0
+Warnings :     3 reported,     0 suppressed
+Messages :     2 reported,     0 suppressed
+
+

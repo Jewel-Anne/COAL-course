@@ -1,0 +1,274 @@
+MPASM 5.87                          MP2A.ASM   3-1-2023  9:31:03         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;###########################     COMMENT HEADER     ############################
+                      00002 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00003 ;  Author:          Jewel Anne A. Reyes                                         ;                       
+                               
+                      00004 ;  Date:            February 27, 2023                                           ;             
+                      00005 ;  Version:         1.0.0                                                       ;
+                      00006 ;  Title:           Machine Problem 2.a                                         ;
+                      00007 ;                                                                               ;
+                      00008 ;  Description:     This Code shows the running light of                        ;
+                      00009 ;                   1 LED or logic probe with 1-sec interval.                   ;
+                      00010 ;                   It will start from RB7 to RB0 and vice versa.               ;
+                      00011 ;                   There are diff methods to produce running lights.           ;
+                      00012 ;                   This code uses a data lookup table.                         ;
+                      00013 ;                                                                               ;
+                      00014 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00015 
+                      00016         
+                      00017 ;#############    DECLARATION AND CONFIGURATION OF A PROCESSOR    ##############        
+Warning[205]: Found directive in column 1. (list)
+                      00018 list p=16f84a                   ;Defining microcontroller model
+                      00019 #include <p16f84a.inc>          ;Processor library for PIC16
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Jan 06 2020
+                      00005 ;  MPASM PIC16F84A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2020 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00209         LIST
+Warning[205]: Found directive in column 1. (__CONFIG)
+2007   3FF1           00020 __CONFIG _CP_OFF & _PWRTE_ON & _WDT_OFF & _XT_OSC       ;Sets processor configuration bits
+                      00021 
+                      00022         
+                      00023 ;##### DIRECTIVE EQU(equivalent) = text substitution for constant/variable #####
+                      00024 ; Special Purpose Registers (SFR):
+  00000003            00025 STATUS    EQU 03H               ;STATUS equivalent to 03H File Address
+  00000005            00026 PORTA     EQU 05H       
+  00000006            00027 PORTB     EQU 06H       
+  00000085            00028 TRISA     EQU 85H       
+  00000086            00029 TRISB     EQU 86H
+                      00030 ; General Purpose Registers (GPR):
+                      00031     cblock      0x20            ;start of general purpose registers
+  00000020            00032         count                   ;used in table read routine
+  00000021            00033         CounterA                ;used in delay routine
+  00000022            00034         CounterB                ;used in delay routine
+  00000023            00035         CounterC                ;used in delay routine
+                      00036     endc
+                      00037 
+                      00038 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00039         ORG 00H                 ;Start assembling lines below this statement at RESET vector (00h)
+0000   2???           00040             GOTO Initial
+MPASM 5.87                          MP2A.ASM   3-1-2023  9:31:03         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00041         ORG 04H                 ;Start assembling lines below this statement at Peripheral Interrupt Vec
+                            tor (04H)
+0004   0009           00042             RETFIE              ;Return from interrupt
+                      00043 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;        
+0005                  00044 Initial
+0005   1683           00045         BSF STATUS, RP0         ;Bit Set F (goes to Bank 1)
+                      00046         
+                      00047     ;Setting PORTB as Output
+0006   3000           00048         MOVLW b'00000000'       ;Move to W Register the binary input 00H
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0007   0086           00049         MOVWF TRISB             ;Transfer W Register literals to F Register 86H
+                      00050         
+0008   1283           00051         BCF STATUS, RP0         ;Bit Clear F (goes to Bank 0)
+0009   0186           00052         CLRF PORTB              ;set all outputs low
+                      00053 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000A                  00054 Start   
+000A   01A0           00055         CLRF    count           ;set counter register to zero
+000B                  00056 Read    
+000B   0820           00057         MOVF    count, w        ;put counter value in W
+000C   2???           00058         CALL    Table   
+000D   0086           00059         MOVWF   PORTB
+000E   2???           00060         CALL    Delay           ;1 second delay
+000F   0A20           00061         INCF    count,  w       ;increment F
+0010   3A0E           00062         XORLW   d'14'           ;check for last (14th) entry
+0011   1903           00063         BTFSC   STATUS, Z
+0012   2???           00064         GOTO    Start           ;if start from beginning
+0013   0AA0           00065         INCF    count,  f       ;else do next
+0014   2???           00066         GOTO    Read
+                      00067 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0015                  00068 Table   
+0015   0782           00069     ADDWF   PCL, f              ;data table for bit pattern
+0016   3480           00070     RETLW   b'10000000'         ;RETLW Return with Literal in W
+0017   3440           00071     RETLW   b'01000000'
+0018   3420           00072     RETLW   b'00100000'
+0019   3410           00073     RETLW   b'00010000'
+001A   3408           00074     RETLW   b'00001000'
+001B   3404           00075     RETLW   b'00000100'
+001C   3402           00076     RETLW   b'00000010'
+001D   3401           00077     RETLW   b'00000001'
+001E   3402           00078     RETLW   b'00000010'
+001F   3404           00079     RETLW   b'00000100'
+0020   3408           00080     RETLW   b'00001000'
+0021   3410           00081     RETLW   b'00010000'
+0022   3420           00082     RETLW   b'00100000'
+0023   3440           00083     RETLW   b'01000000'
+                      00084 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0024                  00085 Delay
+0024   3006           00086     MOVLW D'6'                  ;1 us
+0025   00A3           00087     MOVWF CounterC              ;1 us
+0026   3018           00088     MOVLW D'24'                 ;1 us
+0027   00A2           00089     MOVWF CounterB              ;1 us
+0028   30A7           00090     MOVLW D'167'                ;1 us
+0029   00A1           00091     MOVWF CounterA              ;1 us
+MPASM 5.87                          MP2A.ASM   3-1-2023  9:31:03         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+002A                  00092 loop
+002A   0BA1           00093     DECFSZ CounterA,1           ;167 x 1 cycle + 1 cycle = 168 us
+002B   2???           00094     GOTO loop                   ;166 * 2 us = 332 us
+002C   0BA2           00095     DECFSZ CounterB,1           ;24 x 1 cycle + 1 cycle = 25 us
+002D   2???           00096     GOTO loop                   ;24 * 2 us = 48 us
+002E   0BA3           00097     DECFSZ CounterC,1           ;6 x 1 cycle + 1 cycle = 7 us
+002F   2???           00098     GOTO loop                   ;5 * 2 us = 10 us
+0030   0000           00099     NOP                         ;1 us
+                      00100                                 ;TOTAL = 597 us
+                      00101                                 ;3A + 770B + 197,122C - 197,879
+                      00102                                 ;3(167) + 770(24) + 197,122(6) - 197,879
+                      00103                                 ;501 + 18,480 + 1,182,732 - 197,879
+                      00104                                 ;1,201,713 - 197,879
+                      00105                                 ;DELAY = 1,003,834 us == 1.003 seconds
+0031   0008           00106     RETURN                      ;2 us
+                      00107 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Warning[205]: Found directive in column 1. (END)
+3FF1                  00108 END   
+MPASM 5.87                          MP2A.ASM   3-1-2023  9:31:03         PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+C                                 00000000
+CounterA                          00000021
+CounterB                          00000022
+CounterC                          00000023
+DC                                00000001
+Delay                             00000024
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+Initial                           00000005
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+Read                              0000000B
+MPASM 5.87                          MP2A.ASM   3-1-2023  9:31:03         PAGE  5
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+STATUS                            00000003
+Start                             0000000A
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+Table                             00000015
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84A                          00000001
+MPASM 5.87                          MP2A.ASM   3-1-2023  9:31:03         PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+count                             00000020
+loop                              0000002A
+
+Errors   :     0
+Warnings :     3 reported,     0 suppressed
+Messages :     1 reported,     0 suppressed
+
+

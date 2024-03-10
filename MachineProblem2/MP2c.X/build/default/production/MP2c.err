@@ -1,0 +1,5 @@
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM2\MP2C.X\MP2C.ASM 16 : Found directive in column 1. (list)
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM2\MP2C.X\MP2C.ASM 18 : Found directive in column 1. (__CONFIG)
+Message[302] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM2\MP2C.X\MP2C.ASM 40 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM2\MP2C.X\MP2C.ASM 42 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM2\MP2C.X\MP2C.ASM 57 : Found directive in column 1. (end)

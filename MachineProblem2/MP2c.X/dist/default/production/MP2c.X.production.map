@@ -1,0 +1,38 @@
+MPLINK 5.09, LINKER
+Linker Map File - Created Thu Mar 02 08:47:13 2023
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000004    program   0x00001e
+.config_2007_BUILD/DEFAULT/PRODUCTION/MP2C.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x000012      
+                            0x002007    0x002007      
+            19 out of 1094 program addresses used, program memory utilization is 1%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  Initial   0x000005    program     static C:\Users\reyes\OneDrive\Desktop\MachineProblem2\MP2c.X\MP2c.asm
+                     Main   0x00000d    program     static C:\Users\reyes\OneDrive\Desktop\MachineProblem2\MP2c.X\MP2c.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  Initial   0x000005    program     static C:\Users\reyes\OneDrive\Desktop\MachineProblem2\MP2c.X\MP2c.asm
+                     Main   0x00000d    program     static C:\Users\reyes\OneDrive\Desktop\MachineProblem2\MP2c.X\MP2c.asm
+
+
