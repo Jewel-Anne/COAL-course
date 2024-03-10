@@ -1,0 +1,469 @@
+MPASM 5.87                          MP3B.ASM   3-2-2023  12:28:26         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;###########################     COMMENT HEADER     ############################
+                      00002 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00003 ;  Author:          Jewel Anne A. Reyes                                         ;                       
+                               
+                      00004 ;  Date:            March 1, 2023                                               ;             
+                      00005 ;  Version:         1.0.0                                                       ;
+                      00006 ;  Title:           Machine Problem 3.b                                         ;
+                      00007 ;                                                                               ;
+                      00008 ;  Description:     Processing interrupt caused by changes on pins RB4-RB7      ;
+                      00009 ;                   LED in RB0 to RB3 will recurrence of counting 0?9 BCD       ;
+                      00010 ;                   Change in RB4-RB7 pin, MCU= interrupt routine of            ;
+                      00011 ;                   10 blinks of 1 sec delay of interval in RB0-RB3 pin         ;
+                      00012 ;                                                                               ;
+                      00013 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00014 
+                      00015         
+                      00016 ;#############    DECLARATION AND CONFIGURATION OF A PROCESSOR    ##############        
+Warning[205]: Found directive in column 1. (list)
+                      00017 list p=16f84a                   ;Defining microcontroller model
+                      00018 #include <p16f84a.inc>          ;Processor library for PIC16
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Jan 06 2020
+                      00005 ;  MPASM PIC16F84A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2020 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00209         LIST
+Warning[205]: Found directive in column 1. (__CONFIG)
+2007   3FF1           00019 __CONFIG _CP_OFF & _PWRTE_ON & _WDT_OFF & _XT_OSC       ;Sets processor configuration bits
+                      00020 
+                      00021         
+                      00022 ;##### DIRECTIVE EQU(equivalent) = text substitution for constant/variable #####
+                      00023 ; Special Purpose Registers (SFR):
+  00000003            00024 STATUS      EQU 03H             ;STATUS equivalent to 03H File Address
+  00000005            00025 PORTA       EQU 05H     
+  00000006            00026 PORTB       EQU 06H     
+  00000085            00027 TRISA       EQU 85H     
+  00000086            00028 TRISB       EQU 86H
+  00000081            00029 OPTION_REG  EQU 81H     
+  0000000B            00030 INTCON      EQU 0BH
+                      00031 ; General Purpose Registers (GPR):
+Warning[205]: Found directive in column 1. (cblock)
+                      00032 cblock  0x20                    ;start of general purpose registers
+  00000020            00033         CounterA    
+  00000021            00034         CounterB   
+  00000022            00035         CounterC     
+  00000023            00036         W_TEMP  
+  00000024            00037         STATUS_TEMP 
+Warning[205]: Found directive in column 1. (ENDC)
+                      00038 endc                            ;end of general purpose registers
+MPASM 5.87                          MP3B.ASM   3-2-2023  12:28:26         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00039             
+                      00040 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00041         ORG 00H                 ;Start assembling lines below this statement at RESET vector (00h)
+0000   2???           00042             GOTO Init
+                      00043         ORG 04H                 ;Start assembling lines below this statement at Peripheral Interrupt Vec
+                            tor (04H)
+Warning[207]: Found label after column 1. (PUSH)
+0004                  00044         PUSH
+0004   00A3           00045             MOVWF W_TEMP
+0005   0803           00046             MOVF STATUS, 0
+0006   00A4           00047             MOVWF STATUS_TEMP   
+Warning[207]: Found label after column 1. (ISR)
+0007                  00048         ISR
+0007   100B           00049             BCF INTCON, 0
+                      00050 
+0008   1406           00051             BSF PORTB, 0
+0009   1486           00052             BSF PORTB, 1
+000A   1506           00053             BSF PORTB, 2
+000B   1586           00054             BSF PORTB, 3
+000C   2???           00055             CALL Delay
+                      00056 
+000D   1006           00057             BCF PORTB, 0
+000E   1086           00058             BCF PORTB, 1
+000F   1106           00059             BCF PORTB, 2
+0010   1186           00060             BCF PORTB, 3
+0011   2???           00061             CALL Delay
+                      00062 
+0012   1406           00063             BSF PORTB, 0
+0013   1486           00064             BSF PORTB, 1
+0014   1506           00065             BSF PORTB, 2
+0015   1586           00066             BSF PORTB, 3
+0016   2???           00067             CALL Delay
+                      00068 
+0017   1006           00069             BCF PORTB, 0
+0018   1086           00070             BCF PORTB, 1
+0019   1106           00071             BCF PORTB, 2
+001A   1186           00072             BCF PORTB, 3
+001B   2???           00073             CALL Delay
+                      00074 
+001C   1406           00075             BSF PORTB, 0
+001D   1486           00076             BSF PORTB, 1
+001E   1506           00077             BSF PORTB, 2
+001F   1586           00078             BSF PORTB, 3
+0020   2???           00079             CALL Delay
+                      00080 
+0021   1006           00081             BCF PORTB, 0
+0022   1086           00082             BCF PORTB, 1
+0023   1106           00083             BCF PORTB, 2
+0024   1186           00084             BCF PORTB, 3
+0025   2???           00085             CALL Delay
+                      00086 
+0026   1406           00087             BSF PORTB, 0
+0027   1486           00088             BSF PORTB, 1
+MPASM 5.87                          MP3B.ASM   3-2-2023  12:28:26         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0028   1506           00089             BSF PORTB, 2
+0029   1586           00090             BSF PORTB, 3
+002A   2???           00091             CALL Delay
+                      00092 
+002B   1006           00093             BCF PORTB, 0
+002C   1086           00094             BCF PORTB, 1
+002D   1106           00095             BCF PORTB, 2
+002E   1186           00096             BCF PORTB, 3
+002F   2???           00097             CALL Delay
+                      00098 
+0030   1406           00099             BSF PORTB, 0
+0031   1486           00100             BSF PORTB, 1
+0032   1506           00101             BSF PORTB, 2
+0033   1586           00102             BSF PORTB, 3
+0034   2???           00103             CALL Delay
+                      00104 
+0035   1006           00105             BCF PORTB, 0
+0036   1086           00106             BCF PORTB, 1
+0037   1106           00107             BCF PORTB, 2
+0038   1186           00108             BCF PORTB, 3
+0039   2???           00109             CALL Delay
+                      00110 
+003A   1406           00111             BSF PORTB, 0
+003B   1486           00112             BSF PORTB, 1
+003C   1506           00113             BSF PORTB, 2
+003D   1586           00114             BSF PORTB, 3
+003E   2???           00115             CALL Delay
+                      00116 
+003F   1006           00117             BCF PORTB, 0
+0040   1086           00118             BCF PORTB, 1
+0041   1106           00119             BCF PORTB, 2
+0042   1186           00120             BCF PORTB, 3
+0043   2???           00121             CALL Delay
+                      00122 
+0044   1406           00123             BSF PORTB, 0
+0045   1486           00124             BSF PORTB, 1
+0046   1506           00125             BSF PORTB, 2
+0047   1586           00126             BSF PORTB, 3
+0048   2???           00127             CALL Delay
+                      00128 
+0049   1006           00129             BCF PORTB, 0
+004A   1086           00130             BCF PORTB, 1
+004B   1106           00131             BCF PORTB, 2
+004C   1186           00132             BCF PORTB, 3
+004D   2???           00133             CALL Delay
+                      00134 
+004E   1406           00135             BSF PORTB, 0
+004F   1486           00136             BSF PORTB, 1
+0050   1506           00137             BSF PORTB, 2
+0051   1586           00138             BSF PORTB, 3
+0052   2???           00139             CALL Delay
+                      00140 
+0053   1006           00141             BCF PORTB, 0
+MPASM 5.87                          MP3B.ASM   3-2-2023  12:28:26         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0054   1086           00142             BCF PORTB, 1
+0055   1106           00143             BCF PORTB, 2
+0056   1186           00144             BCF PORTB, 3
+0057   2???           00145             CALL Delay
+                      00146 
+0058   1406           00147             BSF PORTB, 0
+0059   1486           00148             BSF PORTB, 1
+005A   1506           00149             BSF PORTB, 2
+005B   1586           00150             BSF PORTB, 3
+005C   2???           00151             CALL Delay
+                      00152 
+005D   1006           00153             BCF PORTB, 0
+005E   1086           00154             BCF PORTB, 1
+005F   1106           00155             BCF PORTB, 2
+0060   1186           00156             BCF PORTB, 3
+0061   2???           00157             CALL Delay
+                      00158 
+0062   1406           00159             BSF PORTB, 0
+0063   1486           00160             BSF PORTB, 1
+0064   1506           00161             BSF PORTB, 2
+0065   1586           00162             BSF PORTB, 3
+0066   2???           00163             CALL Delay
+                      00164 
+0067   1006           00165             BCF PORTB, 0
+0068   1086           00166             BCF PORTB, 1
+0069   1106           00167             BCF PORTB, 2
+006A   1186           00168             BCF PORTB, 3
+006B   2???           00169             CALL Delay
+Warning[207]: Found label after column 1. (POP)
+006C                  00170         POP
+006C   0824           00171             MOVF STATUS_TEMP, 0
+006D   0083           00172             MOVWF STATUS
+006E   0823           00173             MOVF W_TEMP, 0
+006F   2???           00174             goto Start
+0070   0009           00175         retfie
+                      00176 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0071                  00177 Init
+0071   1683           00178     BSF STATUS,5
+0072   30F0           00179     MOVLW 0xF0 ; Set TRISB<3:0> = 0 (output) and TRISB<7:4> = 1 (input)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0073   0086           00180     MOVWF TRISB
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0074   1701           00181     BSF OPTION_REG, 6
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0075   1781           00182     BSF OPTION_REG, 7
+0076   1283           00183     BCF STATUS, 5
+0077   158B           00184     BSF INTCON, RBIE ; change to 3
+0078   178B           00185     BSF INTCON, GIE
+0079   2???           00186     goto Start
+007A                  00187 Start
+                      00188     ;0
+007A   1006           00189     BCF PORTB, 0
+007B   1086           00190     BCF PORTB, 1
+MPASM 5.87                          MP3B.ASM   3-2-2023  12:28:26         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+007C   1106           00191     BCF PORTB, 2
+007D   1186           00192     BCF PORTB, 3
+007E   2???           00193     CALL Delay
+                      00194     
+                      00195     ;1
+007F   1006           00196     BCF PORTB, 0
+0080   1086           00197     BCF PORTB, 1
+0081   1106           00198     BCF PORTB, 2
+0082   1586           00199     BSF PORTB, 3
+0083   2???           00200     CALL Delay
+                      00201     
+                      00202     ;2
+0084   1006           00203     BCF PORTB, 0
+0085   1086           00204     BCF PORTB, 1
+0086   1506           00205     BSF PORTB, 2
+0087   1186           00206     BCF PORTB, 3
+0088   2???           00207     CALL Delay
+                      00208     
+                      00209     ;3
+0089   1006           00210     BCF PORTB, 0
+008A   1086           00211     BCF PORTB, 1
+008B   1506           00212     BSF PORTB, 2
+008C   1586           00213     BSF PORTB, 3
+008D   2???           00214     CALL Delay
+                      00215     
+                      00216     ;4
+008E   1006           00217     BCF PORTB, 0
+008F   1486           00218     BSF PORTB, 1
+0090   1106           00219     BCF PORTB, 2
+0091   1186           00220     BCF PORTB, 3
+0092   2???           00221     CALL Delay
+                      00222     
+                      00223     ;5
+0093   1006           00224     BCF PORTB, 0
+0094   1486           00225     BSF PORTB, 1
+0095   1106           00226     BCF PORTB, 2
+0096   1586           00227     BSF PORTB, 3
+0097   2???           00228     CALL Delay
+                      00229     
+                      00230     ;6
+0098   1006           00231     BCF PORTB, 0
+0099   1486           00232     BSF PORTB, 1
+009A   1506           00233     BSF PORTB, 2
+009B   1186           00234     BCF PORTB, 3
+009C   2???           00235     CALL Delay
+                      00236     
+                      00237     ;7
+009D   1006           00238     BCF PORTB, 0
+009E   1486           00239     BSF PORTB, 1
+009F   1506           00240     BSF PORTB, 2
+00A0   1586           00241     BSF PORTB, 3
+00A1   2???           00242     CALL Delay
+                      00243     
+MPASM 5.87                          MP3B.ASM   3-2-2023  12:28:26         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00244     ;8
+00A2   1406           00245     BSF PORTB, 0
+00A3   1086           00246     BCF PORTB, 1
+00A4   1106           00247     BCF PORTB, 2
+00A5   1186           00248     BCF PORTB, 3
+00A6   2???           00249     CALL Delay
+                      00250     
+                      00251     ;9
+00A7   1406           00252     BSF PORTB, 0
+00A8   1086           00253     BCF PORTB, 1
+00A9   1106           00254     BCF PORTB, 2
+00AA   1586           00255     BSF PORTB, 3
+00AB   2???           00256     CALL Delay
+00AC   2???           00257     goto Start
+                      00258 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;        
+00AD                  00259 Delay
+00AD   3006           00260     MOVLW D'6'                  ;1 us
+00AE   00A2           00261     MOVWF CounterC              ;1 us
+00AF   3018           00262     MOVLW D'24'                 ;1 us
+00B0   00A1           00263     MOVWF CounterB              ;1 us
+00B1   30A7           00264     MOVLW D'167'                ;1 us
+00B2   00A0           00265     MOVWF CounterA              ;1 us
+00B3                  00266 loop
+00B3   0BA0           00267     DECFSZ CounterA,1           ;167 x 1 cycle + 1 cycle = 168 us
+00B4   2???           00268     GOTO loop                   ;166 * 2 us = 332 us
+00B5   0BA1           00269     DECFSZ CounterB,1           ;24 x 1 cycle + 1 cycle = 25 us
+00B6   2???           00270     GOTO loop                   ;24 * 2 us = 48 us
+00B7   0BA2           00271     DECFSZ CounterC,1           ;6 x 1 cycle + 1 cycle = 7 us
+00B8   2???           00272     GOTO loop                   ;5 * 2 us = 10 us
+00B9   0000           00273     NOP                         ;1 us
+00BA   0008           00274     RETURN                      ;2 us
+                      00275 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;        
+Warning[205]: Found directive in column 1. (end)
+3FF1                  00276 end
+MPASM 5.87                          MP3B.ASM   3-2-2023  12:28:26         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+C                                 00000000
+CounterA                          00000020
+CounterB                          00000021
+CounterC                          00000022
+DC                                00000001
+Delay                             000000AD
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+ISR                               00000007
+Init                              00000071
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+POP                               0000006C
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PUSH                              00000004
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+MPASM 5.87                          MP3B.ASM   3-2-2023  12:28:26         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RP0                               00000005
+RP1                               00000006
+STATUS                            00000003
+STATUS_TEMP                       00000024
+Start                             0000007A
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+W_TEMP                            00000023
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+MPASM 5.87                          MP3B.ASM   3-2-2023  12:28:26         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84A                          00000001
+loop                              000000B3
+
+Errors   :     0
+Warnings :     8 reported,     0 suppressed
+Messages :     3 reported,     0 suppressed
+
+

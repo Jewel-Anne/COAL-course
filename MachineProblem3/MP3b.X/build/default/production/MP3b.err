@@ -1,0 +1,11 @@
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 17 : Found directive in column 1. (list)
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 19 : Found directive in column 1. (__CONFIG)
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 32 : Found directive in column 1. (cblock)
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 38 : Found directive in column 1. (ENDC)
+Warning[207] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 44 : Found label after column 1. (PUSH)
+Warning[207] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 48 : Found label after column 1. (ISR)
+Warning[207] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 170 : Found label after column 1. (POP)
+Message[302] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 180 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 181 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 182 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM3\MP3B.X\MP3B.ASM 276 : Found directive in column 1. (end)

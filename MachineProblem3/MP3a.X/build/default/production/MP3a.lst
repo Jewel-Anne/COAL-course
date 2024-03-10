@@ -1,0 +1,418 @@
+MPASM 5.87                          MP3A.ASM   3-2-2023  11:57:31         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[205]: Found directive in column 1. (list)
+                      00001 list p=16f84a
+                      00002 #include <p16f84a.inc>
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Jan 06 2020
+                      00005 ;  MPASM PIC16F84A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2020 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00209         LIST
+                      00003     
+Warning[205]: Found directive in column 1. (__CONFIG)
+2007   3FF1           00004 __CONFIG _CP_OFF & _PWRTE_ON & _WDT_OFF & _XT_OSC
+                      00005 
+Warning[207]: Found label after column 1. (STATUS)
+  00000003            00006  STATUS EQU 03H
+Warning[207]: Found label after column 1. (PORTA)
+  00000005            00007  PORTA EQU 05H
+Warning[207]: Found label after column 1. (PORTB)
+  00000006            00008  PORTB EQU 06H
+Warning[207]: Found label after column 1. (TRISA)
+  00000085            00009  TRISA EQU 85H
+Warning[207]: Found label after column 1. (TRISB)
+  00000086            00010  TRISB EQU 86H
+Warning[207]: Found label after column 1. (OPTION_REG)
+  00000081            00011  OPTION_REG EQU 81H
+Warning[207]: Found label after column 1. (INTCON)
+  0000000B            00012  INTCON EQU 0BH
+                      00013 
+Warning[207]: Found label after column 1. (CounterC)
+  0000000C            00014  CounterC EQU 0CH
+Warning[207]: Found label after column 1. (CounterB)
+  0000000D            00015  CounterB EQU 0DH
+Warning[207]: Found label after column 1. (CounterA)
+  0000000E            00016  CounterA EQU 0EH
+Warning[207]: Found label after column 1. (W_TEMP)
+  0000000F            00017  W_TEMP EQU 0FH
+Warning[207]: Found label after column 1. (STATUS_TEMP)
+  00000010            00018  STATUS_TEMP EQU 10H
+                      00019 ; **********************************************
+Warning[205]: Found directive in column 1. (ORG)
+                      00020 ORG 00h
+Warning[203]: Found opcode in column 1. (goto)
+0000   2???           00021 goto Init
+Warning[205]: Found directive in column 1. (ORG)
+                      00022 ORG 04h
+Warning[203]: Found opcode in column 1. (goto)
+0004   2???           00023 goto Interrupt
+                      00024 ; **********************************************
+0005                  00025 Interrupt
+MPASM 5.87                          MP3A.ASM   3-2-2023  11:57:31         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0005                  00026 PUSH
+Warning[203]: Found opcode in column 1. (BCF)
+0005   100B           00027 BCF INTCON, 0
+Warning[203]: Found opcode in column 1. (MOVWF)
+0006   008F           00028 MOVWF W_TEMP
+Warning[203]: Found opcode in column 1. (SWAPF)
+0007   0E03           00029 SWAPF STATUS, W
+Warning[203]: Found opcode in column 1. (MOVWF)
+0008   0090           00030 MOVWF STATUS_TEMP
+0009                  00031 ISR
+Warning[203]: Found opcode in column 1. (BCF)
+0009   108B           00032 BCF INTCON, INTF
+Warning[203]: Found opcode in column 1. (BSF)
+000A   1786           00033 BSF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+000B   2???           00034 call Delay
+Warning[203]: Found opcode in column 1. (BCF)
+000C   1386           00035 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+000D   2???           00036 call Delay
+Warning[203]: Found opcode in column 1. (BSF)
+000E   1786           00037 BSF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+000F   2???           00038 call Delay
+Warning[203]: Found opcode in column 1. (BCF)
+0010   1386           00039 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0011   2???           00040 call Delay
+Warning[203]: Found opcode in column 1. (BSF)
+0012   1786           00041 BSF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0013   2???           00042 call Delay
+Warning[203]: Found opcode in column 1. (BCF)
+0014   1386           00043 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0015   2???           00044 call Delay
+Warning[203]: Found opcode in column 1. (BSF)
+0016   1786           00045 BSF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0017   2???           00046 call Delay
+Warning[203]: Found opcode in column 1. (BCF)
+0018   1386           00047 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0019   2???           00048 call Delay
+Warning[203]: Found opcode in column 1. (BSF)
+001A   1786           00049 BSF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+001B   2???           00050 call Delay
+Warning[203]: Found opcode in column 1. (BCF)
+001C   1386           00051 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+001D   2???           00052 call Delay
+Warning[203]: Found opcode in column 1. (BSF)
+MPASM 5.87                          MP3A.ASM   3-2-2023  11:57:31         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+001E   1786           00053 BSF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+001F   2???           00054 call Delay
+Warning[203]: Found opcode in column 1. (BCF)
+0020   1386           00055 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0021   2???           00056 call Delay
+Warning[203]: Found opcode in column 1. (BSF)
+0022   1786           00057 BSF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0023   2???           00058 call Delay
+Warning[203]: Found opcode in column 1. (BCF)
+0024   1386           00059 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0025   2???           00060 call Delay
+Warning[203]: Found opcode in column 1. (BSF)
+0026   1786           00061 BSF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0027   2???           00062 call Delay
+Warning[203]: Found opcode in column 1. (BCF)
+0028   1386           00063 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0029   2???           00064 call Delay
+Warning[203]: Found opcode in column 1. (BSF)
+002A   1786           00065 BSF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+002B   2???           00066 call Delay
+Warning[203]: Found opcode in column 1. (BCF)
+002C   1386           00067 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+002D   2???           00068 call Delay
+002E                  00069 POP
+Warning[203]: Found opcode in column 1. (SWAPF)
+002E   0E10           00070 SWAPF STATUS_TEMP,W
+Warning[203]: Found opcode in column 1. (MOVWF)
+002F   0083           00071 MOVWF STATUS
+Warning[203]: Found opcode in column 1. (SWAPF)
+0030   0E8F           00072 SWAPF W_TEMP, F
+Warning[203]: Found opcode in column 1. (SWAPF)
+0031   0E0F           00073 SWAPF W_TEMP, W
+Warning[203]: Found opcode in column 1. (RETFIE)
+0032   0009           00074 RETFIE
+0033                  00075 Init
+Warning[203]: Found opcode in column 1. (BSF)
+0033   1683           00076 BSF STATUS, 5
+Warning[203]: Found opcode in column 1. (MOVLW)
+0034   3001           00077 MOVLW b'00000001' 
+Warning[203]: Found opcode in column 1. (MOVWF)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0035   0086           00078 MOVWF TRISB
+Warning[203]: Found opcode in column 1. (BSF)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0036   1781           00079 BSF OPTION_REG,7
+MPASM 5.87                          MP3A.ASM   3-2-2023  11:57:31         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[203]: Found opcode in column 1. (BSF)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0037   1701           00080 BSF OPTION_REG,6
+Warning[203]: Found opcode in column 1. (BCF)
+0038   1283           00081 BCF STATUS,5
+Warning[203]: Found opcode in column 1. (BSF)
+0039   160B           00082 BSF INTCON,INTE 
+Warning[203]: Found opcode in column 1. (BSF)
+003A   178B           00083 BSF INTCON,GIE
+Warning[203]: Found opcode in column 1. (BCF)
+003B   1386           00084 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (goto)
+003C   2???           00085 goto Blink
+003D                  00086 Blink
+                      00087 
+Warning[203]: Found opcode in column 1. (BSF)
+003D   1786           00088 BSF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+003E   2???           00089 call Delay2
+                      00090 
+Warning[203]: Found opcode in column 1. (BCF)
+003F   1386           00091 BCF PORTB,7
+Warning[203]: Found opcode in column 1. (call)
+0040   2???           00092 call Delay2
+Warning[203]: Found opcode in column 1. (goto)
+0041   2???           00093 goto Blink
+                      00094  
+0042                  00095 Delay
+Warning[203]: Found opcode in column 1. (movlw)
+0042   3006           00096 movlw D'6'
+Warning[203]: Found opcode in column 1. (movwf)
+0043   008C           00097 movwf CounterC
+Warning[203]: Found opcode in column 1. (movlw)
+0044   3018           00098 movlw D'24'
+Warning[203]: Found opcode in column 1. (movwf)
+0045   008D           00099 movwf CounterB
+Warning[203]: Found opcode in column 1. (movlw)
+0046   30A7           00100 movlw D'167'
+Warning[203]: Found opcode in column 1. (movwf)
+0047   008E           00101 movwf CounterA
+                      00102  
+0048                  00103 loop
+Warning[203]: Found opcode in column 1. (decfsz)
+0048   0B8E           00104 decfsz CounterA,1
+Warning[203]: Found opcode in column 1. (goto)
+0049   2???           00105 goto loop
+Warning[203]: Found opcode in column 1. (decfsz)
+004A   0B8D           00106 decfsz CounterB,1
+Warning[203]: Found opcode in column 1. (goto)
+004B   2???           00107 goto loop
+Warning[203]: Found opcode in column 1. (decfsz)
+004C   0B8C           00108 decfsz CounterC,1
+Warning[203]: Found opcode in column 1. (goto)
+MPASM 5.87                          MP3A.ASM   3-2-2023  11:57:31         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+004D   2???           00109 goto loop
+Warning[203]: Found opcode in column 1. (nop)
+004E   0000           00110 nop
+Warning[203]: Found opcode in column 1. (return)
+004F   0008           00111 return
+                      00112  
+0050                  00113 Delay2
+Warning[203]: Found opcode in column 1. (movlw)
+0050   3001           00114 movlw D'1'
+Warning[203]: Found opcode in column 1. (movwf)
+0051   008C           00115 movwf CounterC
+Warning[203]: Found opcode in column 1. (movlw)
+0052   3018           00116 movlw D'24'
+Warning[203]: Found opcode in column 1. (movwf)
+0053   008D           00117 movwf CounterB
+Warning[203]: Found opcode in column 1. (movlw)
+0054   30A7           00118 movlw D'167'
+Warning[203]: Found opcode in column 1. (movwf)
+0055   008E           00119 movwf CounterA
+                      00120  
+0056                  00121 loop2
+Warning[203]: Found opcode in column 1. (decfsz)
+0056   0B8E           00122 decfsz CounterA,1
+Warning[203]: Found opcode in column 1. (goto)
+0057   2???           00123 goto loop2
+Warning[203]: Found opcode in column 1. (decfsz)
+0058   0B8D           00124 decfsz CounterB,1
+Warning[203]: Found opcode in column 1. (goto)
+0059   2???           00125 goto loop2
+Warning[203]: Found opcode in column 1. (decfsz)
+005A   0B8C           00126 decfsz CounterC,1
+Warning[203]: Found opcode in column 1. (goto)
+005B   2???           00127 goto loop2
+Warning[203]: Found opcode in column 1. (nop)
+005C   0000           00128 nop
+Warning[203]: Found opcode in column 1. (return)
+005D   0008           00129 return
+Warning[205]: Found directive in column 1. (end)
+3FF1                  00130 end
+MPASM 5.87                          MP3A.ASM   3-2-2023  11:57:31         PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+Blink                             0000003D
+C                                 00000000
+CounterA                          0000000E
+CounterB                          0000000D
+CounterC                          0000000C
+DC                                00000001
+Delay                             00000042
+Delay2                            00000050
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+ISR                               00000009
+Init                              00000033
+Interrupt                         00000005
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+POP                               0000002E
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PUSH                              00000005
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+MPASM 5.87                          MP3A.ASM   3-2-2023  11:57:31         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+STATUS                            00000003
+STATUS_TEMP                       00000010
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+W_TEMP                            0000000F
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+MPASM 5.87                          MP3A.ASM   3-2-2023  11:57:31         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84A                          00000001
+loop                              00000048
+loop2                             00000056
+
+Errors   :     0
+Warnings :   108 reported,     0 suppressed
+Messages :     3 reported,     0 suppressed
+
+
