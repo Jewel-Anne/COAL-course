@@ -1,0 +1,4 @@
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MP1C.X\MP1C.ASM 18 : Found directive in column 1. (list)
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MP1C.X\MP1C.ASM 20 : Found directive in column 1. (__CONFIG)
+Message[302] C:\USERS\REYES\ONEDRIVE\DESKTOP\MP1C.X\MP1C.ASM 38 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MP1C.X\MP1C.ASM 53 : Found directive in column 1. (end)
