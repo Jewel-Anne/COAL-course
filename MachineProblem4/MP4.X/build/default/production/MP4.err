@@ -1,0 +1,10 @@
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM4\MP4.X\MP4.ASM 17 : Found directive in column 1. (list)
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM4\MP4.X\MP4.ASM 19 : Found directive in column 1. (__CONFIG)
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM4\MP4.X\MP4.ASM 32 : Found directive in column 1. (cblock)
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM4\MP4.X\MP4.ASM 39 : Found directive in column 1. (ENDC)
+Warning[207] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM4\MP4.X\MP4.ASM 45 : Found label after column 1. (PUSH)
+Warning[207] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM4\MP4.X\MP4.ASM 50 : Found label after column 1. (ISR)
+Warning[207] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM4\MP4.X\MP4.ASM 53 : Found label after column 1. (POP)
+Message[302] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM4\MP4.X\MP4.ASM 66 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM4\MP4.X\MP4.ASM 67 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[205] C:\USERS\REYES\ONEDRIVE\DESKTOP\MACHINEPROBLEM4\MP4.X\MP4.ASM 129 : Found directive in column 1. (end)
